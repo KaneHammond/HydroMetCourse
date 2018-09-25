@@ -1,5 +1,8 @@
 import math
 from datetime import datetime
+
+#			QUESTION 2
+
 #*****************************************Total daily solar E!
 #***** Determine Solar Constant
 
@@ -31,7 +34,8 @@ Lon = (Lon*math.pi)/180
 
 #***** Declination (D) angle (-23.45<=D<=23.45)
 # n as day of year
-Date = datetime.strptime('15/3/2018', '%d/%m/%Y')
+Date = datetime.strptime('15/8/2018', '%d/%m/%Y')
+# Date = datetime.strptime('15/3/2018', '%d/%m/%Y')
 n = Date.strftime('%j')
 n = int(n)
 DA = 0.4093*math.sin((((2*math.pi)/365)*n)-1.405)
@@ -73,7 +77,7 @@ Sd = (As+(N/24)*Bs)*S
 # Albedo of water approx 0.08
 # Get Net Daily Solar Radiation
 Sdn = (1-(0.08))*Sd
-print "here %f" % Sdn
+
 # Water variables
 # Total Water
 Volume = 8*4.5*0.5 #(ft^3)
@@ -109,10 +113,24 @@ print Days
 # Estimate days for evap with Equivalent depth of evaporated water equation:
 S = 15.39*dr*(Ws*math.sin(Lat)*math.sin(DA)
 	+math.cos(Lat)*math.cos(DA)*math.sin(Ws))
+# Rate is in mm per day
 Rate = S
-
+print S
 # Convert depth from in to mm
 Depth = 6*25.4
 
 Days = Depth/Rate
 print Days
+
+# The Kansas site showed a daily solar insolation of 26.9092820836 MJ/m^2
+# on March, 15th, 2019. This resulted in a water loss of about 11.075 mm 
+# per day. Leading to a total of 13.76 days for the water to evaporate. 
+# On August, 15th, 2019, the total solar insolation was 37.6461644165 MJ/m^2.
+# Resulting in an evaporation rate of 15.494 mm per day, and 9.835 days
+# till total evaporation. The equation used to estimate the evaporation 
+# rate added reduciton variables to total solar insolation value. This was
+# to account for the lenght of total estimated sunshine. Other variables
+# such as wind, surface temperatures, and seepage into the soil were not 
+# accounted for. This reduced the accuracy of my results. Regardless, I 
+# feel that the estimate is accurate enough to use for larger scale studies
+# where specific variables are missing.

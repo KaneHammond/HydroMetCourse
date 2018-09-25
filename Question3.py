@@ -1,10 +1,9 @@
-
 import math
 from datetime import datetime
 
+#			QUESTION 3
 
-
-#****************************************** Net Daily Ave Longwave Radiation
+#*********************************** Net Daily Ave Longwave Radiation
 #***** Determine Solar Constant
 
 # Stefan-Boltzmann Constant (W/m^2.K^4)
@@ -67,6 +66,7 @@ S = ((Hs*Hd/math.pi)*Gsc)*dr*(Ws*math.sin(Lat)*math.sin(DA)
 # Actual daily solar radiation at ground:
 As = 0.25
 Bs = 0.75
+Sd = (As+(N/24)*Bs)*S
 
 # Average cloud coverage in octas:
 c = 0.4
@@ -77,17 +77,34 @@ e = 6.11*(10**((7.5*Dp)/(237.3+Dp)))
 
 # Sat Vapor Pressure
 Temp = 23.3
-es = 6.11*(10**((7.5*Temp)/(237.3+Temp)))
+# es = 6.11*(10**((7.5*Temp)/(237.3+Temp)))
 
-# Actual Solar
-Sd = (As+(N/24)*Bs)*S
-
-# f for equation
+# f for equation (Sd and S are for computing fractional solar E!
+# units do not transfer to equation)
 f = (Sd/S)*((As+(1-c)*Bs)/(As+Bs))
 
 # e for the equation
 e = 0.34-(0.14*(math.sqrt(Dp)))
 
+# Compute Daily Average Net Longwave Radiation units transfer 
+# from Stefan-Boltzmann Constant (W/m^2)
 L = (-f)*e*o*(Temp**4)
-
 print L
+# Convert Daily Average Net Longwave Radiation to daily average
+# Watts = Jouls
+Total = (3600*24)*(L)
+print Total
+
+# The daily net longwave radiation for Grand Forks, September, 9th, 2018,
+# was 158.618434984 joules. With the constant average value of 
+# 0.00183586151602 W/m^2. In order to calculate this, I used daily readings, 
+# on the hour, to determine average cloud coverage, temperature, and dewpoint. 
+# I then used the dewpoint to calculate the vapor pressure to help estimate 
+# how much longwave radiation could be transfered.
+
+# The cloud coverage aided in estimating how much radiation made it to the 
+# surface. The temperature was used in the final equation to aid in estimating
+# the radiation value specific to the surface. I think this equation was the 
+# most accurate of the ones so far. It included more variables specific to 
+# the location. However, we did use generic variables estimating heat loss,
+# which are regularly obtained via field measurements.
