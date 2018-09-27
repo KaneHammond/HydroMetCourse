@@ -129,7 +129,7 @@ print Days
 # Resulting in an evaporation rate of 15.494 mm per day, and 9.835 days
 # till total evaporation. The equation used to estimate the evaporation 
 # rate added reduciton variables to total solar insolation value. This was
-# to account for the lenght of total estimated sunshine. Other variables
+# to account for the lenght day and total estimated sunshine. Other variables
 # such as wind, surface temperatures, and seepage into the soil were not 
 # accounted for. This reduced the accuracy of my results. Regardless, I 
 # feel that the estimate is accurate enough to use for larger scale studies

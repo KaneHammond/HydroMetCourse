@@ -13,113 +13,66 @@ import matplotlib.pyplot as plt; plt.rcdefaults()
 from matplotlib.ticker import MultipleLocator
 from matplotlib.ticker import NullFormatter
 import time
+import numpy as np
 
 
-# This equation shows large varitions in heat
-t = float(1)
-frac = t/24
-Depth = float(.02)
-SD = float(.1)
-Tm = 40
-# Tm = (273.15+(Tm))
-Ta = float(15)
-A = 15
-B = (2*math.pi)
-P = A/B
-t = frac*P
-D = Tm
-Shift = -(Depth/SD)
-# Ta = (273.15+(Ta))
-
-y = A*math.sin(2*math.pi*((P-t)/P))+D
-# Equals 40 at 0 and 12
-# print y
-
-# BASE TEMP OVER TIME
+# Surface Temperature Over Time
 def fnc(t):
-	t = float(t)
-	frac = t/24
-	# Depth = float(.02)
-	# SD = float(.1)
-	Tm = 40
-	# Tm = (273.15+(Tm))
-	Ta = float(15)
-	A = 15
-	B = (2*math.pi)
-	P = A/B
-	t = frac*P
-	D = Tm
-	# Shift = -(Depth/SD)
-	# Ta = (273.15+(Ta))
-
-	y = A*math.sin(2*math.pi*((P-t)/P))+D
-	return y
-
-
-time = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
-var = []
-for aRow in time:
-	v = fnc(aRow)
-	var.append(v)
-
-
-x = time
-y = var
-
-fig = plt.figure()
-ax = fig.add_subplot(111)
-ax.grid(True)
-fig.subplots_adjust(top=0.85)
-ax.set_xlabel('Time (Hours)')
-ax.set_ylabel('Temp (C)')
-ax.set_title('Temperature over Time', fontweight='bold')
-plt.plot(x,y,  '-')
-
-plt.show()
-
-plt.close()
-
-
-#***************************************TRY SOIL 
-
-def fnc(t):
-	Depth = float(.02)
-	SD = float(.1)
-	Tm = 40
-	# Tm = (273.15+(Tm))
+	Tm = 25
 	Ta = 15
-	# Ta = 273.15+Ta
-	A = (Ta*(-Depth/SD))
-	# print A
-	B = (2*math.pi)
-	P = A/B
-	D = Tm
-	# D = 273.15+D
-	Shift = -(Depth/SD)
-	# Shift = 0
-
 	t = float(t*3600)
-	# frac = t/24
-	Pt = (P/24)
-	to = (Pt*6)*3600
-	# print to
-	# print t
-	to = float(to)
-
-	y = A*math.sin(2*math.pi*((t-to)/P)+Shift)+D
+	P = (24*3600)
+	to = 6*3600
+	P = (t-to)/(24*3600)
+	y = Tm + Ta*math.sin((2*math.pi*P))
 	return y
 
+time = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
+SurfaceT = []
+for aRow in time:
+	v = fnc(aRow)
+	SurfaceT.append(v)
+x = time
+y = SurfaceT
+fig = plt.figure()
+ax = fig.add_subplot(111)
+ax.grid(True)
+fig.subplots_adjust(top=0.85)
+ax.set_xlabel('Time (Hours)')
+ax.set_ylabel('Temp (C)')
+ax.set_title('Surface Temperature over Time', fontweight='bold')
+plt.plot(x,y,  '-')
 
+# plt.show()
+
+plt.close()
+
+#************************************** SOIL 
+
+def fnc(t):
+	Depth = 0.05
+	SD = 0.1
+	Tm = 25
+	Ta = 15
+	D = Tm
+	Shift = -(Depth/SD)
+	t = float(t*3600)
+	P = (24*3600)
+	to = 6*3600
+	P = (t-to)/(24*3600)
+	y = D + (Ta*np.exp(-Depth/SD))*(math.sin((2*math.pi*P+Shift)))
+	return y
+
+#Graph
 time = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
 var = []
 for aRow in time:
 	v = fnc(aRow)
 	var.append(v)
 
-
 x = time
 y = var
-
+# Graph
 fig = plt.figure()
 ax = fig.add_subplot(111)
 ax.grid(True)
@@ -128,81 +81,75 @@ ax.set_xlabel('Time (Hours)')
 ax.set_ylabel('Temp (C)')
 ax.set_title('Temperature over Time', fontweight='bold')
 plt.plot(x,y,  '-')
-
-plt.show()
-
+# plt.show()
 plt.close()
 
+# VALUES
+# 12 pm:
+# 0.05 Meters = 32.98421095323506 Celsius
+# 0.1 Meters = 27.981491655196194 Celsius
+# 0.2 Meters = 24.155209750118082 Celsius
+# 12 am:
+# 0.05 Meters = 17.01578904676494 Celsius
+# 0.1 Meters = 22.018508344803806 Celsius
+# 0.2 Meters = 25.844790249881918 Celsius
 
-# Depth = float(.02)
-# SD = float(.1)
-# Tm = 40
-# # Tm = (273.15+(Tm))
-# Ta = float(15)
-# A = 15*math.pi
-# B = (2*math.pi)
-# P = A/B
-# D = Tm
+# The results show that the larges fluctuations occur at the 0.05 meter 
+# depth. This is the sample closest to the surface. Between noon and midnight,
+# we see much larger fluctuations for the 0.05 and 0.1 meter depths, while the 
+# 0.2 meter depth shows less of a fluctuation and more of a delayed response
+# to the surface temeperatures.
 
-# Hour = float(6)
-# HourR = Hour/24
-# tVar = HourR*P
-# t = float(tVar*math.pi)
-
-
-# y = A*math.sin(2*math.pi*(t-P/P))+D
-# # Changes? wrong
-# # print y
-
-
-# Depth = float(.02)
-# SD = float(.1)
-# Tm = 40
-# # Tm = (273.15+(Tm))
-# Ta = 15
-# Ta = 273.15+Ta
-# A = (Ta**(-Depth/SD))
-
-# # print A
-# B = (2*math.pi)
-# P = A/B
-# D = Tm
-# D = 273.15+D
-# Shift = -(Depth-SD)
-
-# Hour = float(0)
-# HourR = Hour/48
-# tVar = HourR*P
-# t = float(tVar*math.pi)
-
-
-# y = A*math.sin(2*math.pi*(t-P/P)+Shift)+D
-# # print y
-# # print y-273.15
+# I feel these calculations still lack accuracy without the aspect of 
+# ground coverage. In addition, we do not include any environmental variables.
+# The soil is given the same porosity and water content. The use of multiple 
+# measuring instruments could aid in predicting large areas. Since the latter
+# soil sample shows the least fluctuation, I believe that could be the
+# simplest to predict.
 
 
 
-# Depth = float(.02)
-# SD = float(.1)
-# Tm = 40
-# # Tm = (273.15+(Tm))
-# Ta = 15
-# # Ta = 273.15+Ta
-# A = (Ta*(-Depth/SD))
 
-# print A
-# B = (2*math.pi)
-# P = A/B
-# D = Tm
-# # D = 273.15+D
-# Shift = -(Depth-SD)
+def fnc(t, Depth):
+	SD = 0.1
+	Tm = 25
+	Ta = 15
+	D = Tm
+	Shift = -(Depth/SD)
+	t = float(t*3600)
+	P = (24*3600)
+	to = 6*3600
+	P = (t-to)/(24*3600)
+	y = D + (Ta*np.exp(-Depth/SD))*(math.sin((2*math.pi*P+Shift)))
+	return y
 
-# Hour = float(6)
-# HourR = Hour/48
-# tVar = HourR*P
-# t = float(tVar*math.pi)
+Depth1 = []
+for aRow in time:
+	v = fnc(aRow, 0.05)
+	Depth1.append(v)
+print Depth1
 
+Depth2 = []
+for aRow in time:
+	v = fnc(aRow, 0.1)
+	Depth2.append(v)
 
-# y = A*math.sin(2*math.pi*(t-P/P)+Shift)+D
+Depth3 = []
+for aRow in time:
+	v = fnc(aRow, 0.2)
+	Depth3.append(v)
 
-# print y
+fig = plt.figure()
+ax = fig.add_subplot(111)
+ax.grid(True)
+fig.subplots_adjust(top=0.85)
+ax.set_xlabel('Time (Hours)')
+ax.set_ylabel('Temp (C)')
+ax.set_title('Soil Temperature Over Time', fontweight='bold')
+plt.plot(x, Depth1,  '-', label='0.05 Meters')
+plt.plot(x, Depth2,  '-.', label='0.1 Meters')
+plt.plot(x, Depth3,  '.', label='0.2 Meters')
+plt.plot(x, SurfaceT,  '-', color='black', label='Surface Temperature')
+plt.legend()
+plt.show()
+plt.close()

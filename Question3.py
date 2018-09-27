@@ -62,7 +62,7 @@ Gsc = Gsc/1000000
 # Calculate Daily Solar Insolation (MJ/m^2)
 S = ((Hs*Hd/math.pi)*Gsc)*dr*(Ws*math.sin(Lat)*math.sin(DA)
 	+math.cos(Lat)*math.cos(DA)*math.sin(Ws))
-
+print S
 # Actual daily solar radiation at ground:
 As = 0.25
 Bs = 0.75
@@ -88,23 +88,24 @@ e = 0.34-(0.14*(math.sqrt(Dp)))
 
 # Compute Daily Average Net Longwave Radiation units transfer 
 # from Stefan-Boltzmann Constant (W/m^2)
+Temp = Temp+273.15
 L = (-f)*e*o*(Temp**4)
 print L
 # Convert Daily Average Net Longwave Radiation to daily average
-# Watts = Jouls
+# Watts = Joules
+# Joules per day
 Total = (3600*24)*(L)
+# MJ per day
+Total = Total/1000000
 print Total
 
-# The daily net longwave radiation for Grand Forks, September, 9th, 2018,
-# was 158.618434984 joules. With the constant average value of 
-# 0.00183586151602 W/m^2. In order to calculate this, I used daily readings, 
-# on the hour, to determine average cloud coverage, temperature, and dewpoint. 
-# I then used the dewpoint to calculate the vapor pressure to help estimate 
-# how much longwave radiation could be transfered.
+# My result for total daily insolation was 26.6308 MJ/m^2. This led
+# to 48.1085 W/m^2 of daily average net longwave radiation, resulting
+# in a total of 4.1565 MJ/m^2 of daily net longwave radiation.
 
-# The cloud coverage aided in estimating how much radiation made it to the 
-# surface. The temperature was used in the final equation to aid in estimating
-# the radiation value specific to the surface. I think this equation was the 
-# most accurate of the ones so far. It included more variables specific to 
-# the location. However, we did use generic variables estimating heat loss,
-# which are regularly obtained via field measurements.
+# This analysis fails to incorporate cloud coverage, atmospheric reflection/
+# scattering, and total daily sunlight. The initial average for net longwave
+# radiation is in the units W/m^2, but this is over a time frame of 24
+# hours. The average is multiplied to calculate total net longwave radiation
+# then converted to MJ per day. 
+
